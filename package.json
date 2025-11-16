@@ -1,0 +1,74 @@
+{
+  "name": "travelflow",
+  "version": "1.0.0",
+  "description": "Comprehensive travel feedback platform for airlines and hotels",
+  "private": true,
+  "workspaces": [
+    "mobile",
+    "backend",
+    "shared"
+  ],
+  "scripts": {
+    "setup": "npm install && npm run setup:mobile && npm run setup:backend",
+    "setup:mobile": "cd mobile && npm install",
+    "setup:backend": "cd backend && npm install",
+    "dev": "concurrently \"npm run backend:dev\" \"npm run mobile:start\"",
+    "backend:dev": "cd backend && npm run start:dev",
+    "mobile:start": "cd mobile && npm start",
+    "mobile:ios": "cd mobile && npm run ios",
+    "mobile:android": "cd mobile && npm run android",
+    "build": "npm run build:backend && npm run build:mobile",
+    "build:backend": "cd backend && npm run build",
+    "build:mobile": "cd mobile && npm run build",
+    "test": "npm run test:backend && npm run test:mobile",
+    "test:backend": "cd backend && npm run test",
+    "test:mobile": "cd mobile && npm run test",
+    "test:cov": "npm run test:backend -- --coverage && npm run test:mobile -- --coverage",
+    "test:watch": "concurrently \"npm run test:backend -- --watch\" \"npm run test:mobile -- --watch\"",
+    "lint": "npm run lint:backend && npm run lint:mobile",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:mobile": "cd mobile && npm run lint",
+    "lint:fix": "npm run lint:backend -- --fix && npm run lint:mobile -- --fix",
+    "db:migrate": "cd backend && npm run db:migrate",
+    "db:seed": "cd backend && npm run db:seed",
+    "db:reset": "cd backend && npm run db:reset",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "clean": "npm run clean:mobile && npm run clean:backend && rm -rf node_modules",
+    "clean:mobile": "cd mobile && rm -rf node_modules ios/Pods ios/build android/build android/.gradle",
+    "clean:backend": "cd backend && rm -rf node_modules dist"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DoughBoy01/travelflow.git"
+  },
+  "keywords": [
+    "travel",
+    "feedback",
+    "airlines",
+    "hotels",
+    "gamification",
+    "mobile",
+    "react-native",
+    "nestjs"
+  ],
+  "author": "TravelFlow Team",
+  "license": "MIT"
+}

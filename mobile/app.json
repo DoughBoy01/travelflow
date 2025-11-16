@@ -1,0 +1,46 @@
+{
+  "name": "TravelFlow",
+  "displayName": "TravelFlow",
+  "expo": {
+    "name": "TravelFlow",
+    "slug": "travelflow",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.travelflow.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "TravelFlow needs access to your camera to capture photos for feedback.",
+        "NSMicrophoneUsageDescription": "TravelFlow needs access to your microphone for voice feedback.",
+        "NSLocationWhenInUseUsageDescription": "TravelFlow uses your location to provide contextual feedback prompts during your journey."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.travelflow.app",
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "VIBRATE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}

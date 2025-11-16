@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: travelflow-postgres
+    environment:
+      POSTGRES_DB: travelflow
+      POSTGRES_USER: travelflow
+      POSTGRES_PASSWORD: travelflow_dev_password
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/init:/docker-entrypoint-initdb.d
+    networks:
+      - travelflow-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U travelflow']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: travelflow-redis
+    command: redis-server --appendonly yes
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - travelflow-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API (NestJS)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../infrastructure/docker/Dockerfile.backend
+    container_name: travelflow-backend
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://travelflow:travelflow_dev_password@postgres:5432/travelflow
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: dev_jwt_secret_change_in_production
+      JWT_EXPIRATION: 7d
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - travelflow-network
+    command: npm run start:dev
+
+  # Adminer (Database UI - Development only)
+  adminer:
+    image: adminer:latest
+    container_name: travelflow-adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+    networks:
+      - travelflow-network
+    profiles:
+      - debug
+
+  # Redis Commander (Redis UI - Development only)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: travelflow-redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - '8081:8081'
+    depends_on:
+      - redis
+    networks:
+      - travelflow-network
+    profiles:
+      - debug
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  travelflow-network:
+    driver: bridge
