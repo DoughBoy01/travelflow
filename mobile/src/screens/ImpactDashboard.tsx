@@ -3,14 +3,70 @@
  * Shows user's impact metrics
  */
 
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { useGetUserImpactQuery } from '@/store/api/analyticsApi';
 import { Card } from '@/components/common/Card';
+import { FeedbackCarousel } from '@/components/feedback/FeedbackCarousel';
+import { FeedbackCardData } from '@/components/feedback/FeedbackCard';
 import { SPACING, COLORS, TYPOGRAPHY } from '@/constants/theme';
 
 export const ImpactDashboard: React.FC = () => {
   const { data: impact, isLoading } = useGetUserImpactQuery();
+
+  // Sample feedback data for carousel demonstration
+  const [sampleFeedback] = useState<FeedbackCardData[]>([
+    {
+      id: 'fb_1',
+      type: 'positive',
+      content: 'The new meal options on my recent flight were absolutely fantastic! Great variety and quality.',
+      userName: 'Sarah M.',
+      category: 'airline meals',
+      likes: 24,
+      isLiked: false,
+      timestamp: new Date(Date.now() - 3600000).toISOString(),
+    },
+    {
+      id: 'fb_2',
+      type: 'suggestion',
+      content: 'Hotel check-in was smooth, but it would be great to have a mobile key option.',
+      userName: 'John D.',
+      category: 'hotel service',
+      likes: 12,
+      isLiked: true,
+      timestamp: new Date(Date.now() - 7200000).toISOString(),
+    },
+    {
+      id: 'fb_3',
+      type: 'issue',
+      content: 'WiFi connection was spotty during the flight. Could use improvement.',
+      userName: 'Emily R.',
+      category: 'connectivity',
+      likes: 8,
+      isLiked: false,
+      timestamp: new Date(Date.now() - 10800000).toISOString(),
+    },
+    {
+      id: 'fb_4',
+      type: 'positive',
+      content: 'Lounge access was amazing! Comfortable seating and great food selection.',
+      userName: 'Michael T.',
+      category: 'lounge',
+      likes: 35,
+      isLiked: false,
+      timestamp: new Date(Date.now() - 14400000).toISOString(),
+    },
+  ]);
+
+  const handleLike = useCallback((feedbackId: string) => {
+    console.log('Liked feedback:', feedbackId);
+    // TODO: Implement API call to like feedback
+  }, []);
+
+  const handleShare = useCallback((feedbackId: string) => {
+    console.log('Shared feedback:', feedbackId);
+    // TODO: Implement API call to track share
+  }, []);
 
   if (isLoading) {
     return (
@@ -39,6 +95,16 @@ export const ImpactDashboard: React.FC = () => {
           </View>
         </View>
       </Card>
+
+      {/* Recent Community Feedback Carousel */}
+      <View style={styles.section}>
+        <FeedbackCarousel
+          title="Recent Community Feedback"
+          feedbackItems={sampleFeedback}
+          onLike={handleLike}
+          onShare={handleShare}
+        />
+      </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Changes You Influenced</Text>
