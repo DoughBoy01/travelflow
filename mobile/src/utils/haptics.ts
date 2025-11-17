@@ -94,3 +94,34 @@ export const pointsEarnedHaptic = (points: number) => {
     heavyHaptic();
   }
 };
+
+/**
+ * Generic trigger function with string type
+ */
+export const triggerHaptic = (type: 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error' | 'selection') => {
+  if (!FEATURES.HAPTICS) return;
+
+  switch (type) {
+    case 'light':
+      lightHaptic();
+      break;
+    case 'medium':
+      mediumHaptic();
+      break;
+    case 'heavy':
+      heavyHaptic();
+      break;
+    case 'success':
+      successHaptic();
+      break;
+    case 'warning':
+      warningHaptic();
+      break;
+    case 'error':
+      errorHaptic();
+      break;
+    case 'selection':
+      selectionHaptic();
+      break;
+  }
+};

@@ -54,6 +54,7 @@ export const COLORS = {
     disabled: '#BDBDBD',
     hint: '#9E9E9E',
   },
+  divider: '#E0E0E0',
 
   // Sentiment colors for feedback
   sentiment: {
@@ -94,6 +95,7 @@ export const TYPOGRAPHY = {
   fontWeight: {
     regular: '400' as const,
     medium: '500' as const,
+    semibold: '600' as const,
     bold: '700' as const,
   },
 } as const;
