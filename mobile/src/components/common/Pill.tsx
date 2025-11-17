@@ -38,11 +38,19 @@ const VARIANT_COLORS = {
 };
 
 /**
- * Capitalizes the first letter of a string
+ * Capitalizes the first letter of each word (title case)
+ * Example: "airline meals" -> "Airline Meals"
  */
-const capitalizeFirst = (text: string): string => {
+const toTitleCase = (text: string): string => {
   if (!text || text.length === 0) return text;
-  return text.charAt(0).toUpperCase() + text.slice(1);
+
+  return text
+    .split(' ')
+    .map(word => {
+      if (word.length === 0) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
 };
 
 export const Pill: React.FC<PillProps> = ({
@@ -51,7 +59,7 @@ export const Pill: React.FC<PillProps> = ({
   style,
 }) => {
   const colors = VARIANT_COLORS[variant];
-  const capitalizedText = capitalizeFirst(text);
+  const capitalizedText = toTitleCase(text);
 
   return (
     <View
